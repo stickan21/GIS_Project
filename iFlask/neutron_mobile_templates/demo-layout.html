@@ -1,0 +1,36 @@
+<!doctype html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <!--   <title>{{ config['SITE_TITLE'] }}</title> -->
+    {% load static %}
+    <script type=text/javascript src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+    {% block head %}{% endblock %}
+  </head>
+  <body>
+    {# banner #}
+    <div id="navigation">
+
+    </div>
+    {# Header #}
+    <div id="header">
+      
+    </div>
+
+    <div id="wrapper">
+      {# Main Content #}
+      <div id="content">
+        {% block body %}{% endblock %}
+      </div>
+  </div>
+  {# For Javascript #}
+  
+  {% block bottom %}{% endblock %}
+
+  {% block footer %}
+    {% include "footer.html" %}
+  {% endblock %}
+
+  {% block afterscript %}{% endblock %}
+  </body>
+</html>

@@ -1,0 +1,574 @@
+{% extends "layout.html" %}
+
+
+ {% block head %}
+     <link rel="stylesheet" type="text/css" href="/static/css/modal.css">
+     <link rel="stylesheet" type="text/css" href="/static/css/mystyle.css">
+     <link rel="stylesheet" type="text/css" href="/static/css/main.css">
+     <link rel="stylesheet" type="text/css" href="/static/css/dropdown.css">
+     <link rel="stylesheet" type="text/css" href="/static/css/select.css">
+     <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+
+     <script type="text/javascript" src="{{ url_for('static', filename='js/slider.js') }}"></script>
+     <script type="text/javascript" src="{{ url_for('static', filename='js/modal.js') }}"></script>
+
+     <!-- var dataset is defined inside dataPoints.js -->
+ {% endblock %}
+
+{% block body %}
+
+	<div class="banner-gis" id="banner"></div>
+	<div class="container-fluid intro">
+		<div class="title" id="demo-name">GIS for Real Estate</div>
+		<div class="description" id="demo-detail">This is a Geographical Information System (GIS) platform for real estate listing and price estimation. When researching real property, the depth of inquiry required for analysis could be a fairly narrow range of attributes to a quite comprehensive investigation. In the past, property record researchers depended on combing through catalogued paper documents to find records of ownership, sales history, and other parcel documentation. The GIS have given researchers the ability to search electronically for property records, many via the web. In the meantime, spatial analysis gives the realtor, and ultimately the seller, the ability to more easily showcase the subject property’s characteristics and advantages with respect to its location. A model based on the geographically weighted regression takes charge of the price estimation based on the estate’s attributes and location.
+        </div>
+
+	</div>
+
+	<div class="container fluid content">
+        <div id="floating-panel">
+        </div>
+        <div id="map" style="height: 600px"></div>
+        <div id="diag" style="height:100%; width:100%; position: absolute; left: 0; top: 0; bottom: 0; right: 0; margin: auto; text-align: center; display: none">
+            <div id="modal-container">
+              <div id="modal-backgound" class="modal-background">
+                  <div class="gis_modal">
+                      <div class="wrapper input-box" style="margin: 0px;">
+                            <div class="box-header-in">
+                                <div class="input-title">Features</div>
+                            </div>
+                            <form id="frmInput" class="ajax-post" action="{{url_for('gis.form')}}" method="post">
+                                <div class="input-item">
+                                    <div class="flex-box">
+                                        <div class="left-flex">
+                                                <div class="item-name ">List Price</div>
+                                                <input type="number" id="ListPrice" name="ListPrice" class="gis-input " value="500000" step="0.01">
+
+                                                <div class="item-name ">Cumulative days on Market</div>
+                                                <input type="text" id="CDOM" name="CDOM" class="gis-input " value="20">
+
+                                                <div class="item-name ">Lot Sqft</div>
+                                                <input type="number" id="LotSqFt" name="LotSqFt" class="gis-input " value="1500" step="0.01">
+
+                                                <div class="item-name ">Baths Full</div>
+                                                <div class="dropbox">
+                                                     <div class="page">
+                                                      <div class="select-dropdown">
+                                                        <select name="BathsFull" id="BathsFull">
+                                                          <option name="BathsFull" value="1">1</option>
+                                                          <option name="BathsFull" value="2">2</option>
+                                                          <option name="BathsFull" value="3" selected="selected">3</option>
+                                                          <option name="BathsFull" value="4">4</option>
+                                                          <option name="BathsFull" value="5">5</option>
+                                                        </select>
+                                                      </div>
+                                                    </div>
+
+                                                </div>
+
+                                                <div class="item-name ">Garage</div>
+                                                <input type="text" id="GarageSpaces" name="GarageSpaces" class="gis-input " value="1">
+
+                                                <div class="item-name ">Number of Units</div>
+                                                <input type="text" id="NumberUnits" name="NumberUnits" class="gis-input " value="1">
+
+                                                <div class="item-name ">HOA Fee</div>
+                                                <input type="text" id="HOAFee" name="HOAFee" class="gis-input " value="100">
+
+
+                                        </div>
+                                        <div class="right-flex">
+                                            <div class="item-name ">Days on Market</div>
+                                            <input type="text" id="DOM" name="DOM" class="gis-input " value="10">
+
+                                            <div class="item-name ">Number of Bedrooms</div>
+                                                <div class="dropbox">
+                                                    <div class="page">
+                                                      <div class="select-dropdown">
+                                                        <select name="Bedrooms" id="Bedrooms">
+                                                          <option value="1">1</option>
+                                                          <option value="2">2</option>
+                                                          <option value="3" selected="selected">3</option>
+                                                          <option value="4">4</option>
+                                                          <option value="5">5</option>
+                                                          <option value="5">6</option>
+                                                          <option value="5">7</option>
+                                                        </select>
+                                                      </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="item-name ">Year Built</div>
+                                                <div class="dropbox">
+                                                    <div class="page">
+                                                      <div class="select-dropdown">
+                                                        <select name="YearBuilt" id="YearBuilt">
+                                                          <option value="1950">1950</option>
+                                                          <option value="1960">1960</option>
+                                                          <option value="1970">1970</option>
+                                                          <option value="1980" selected="selected">1980</option>
+                                                          <option value="1990">1990</option>
+                                                          <option value="2000">2000</option>
+                                                          <option value="2010">2010</option>
+                                                        </select>
+                                                      </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="item-name ">Structure Sqft</div>
+                                                <input type="text" id="StructureSqFt" name="StructureSqFt" class="gis-input " value="1500">
+
+                                                <div class="item-name ">Baths Half</div>
+                                                <div class="dropbox">
+                                                    <div class="page">
+                                                      <div class="select-dropdown">
+                                                        <select name="BathsHalf" id="BathsHalf">
+                                                          <option value="0.5">0.5</option>
+                                                          <option value="0.75">0.75</option>
+                                                        </select>
+                                                      </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="item-name ">Parking Space</div>
+                                                <input type="text" id="ParkingSpaces" name="ParkingSpaces" class="gis-input " value="1">
+
+                                                <div class="item-name ">Stories Total</div>
+                                                <input type="text" id="StoriesTotal" name="StoriesTotal" class="gis-input " value="1">
+                                        </div>
+                                    </div>
+                                    <input type="hidden" id="Points" name="Points" value="">
+									<input type="hidden" id="clickPointLat" name="clickPointLat" value="">
+									<input type="hidden" id="clickPointLng" name="clickPointLng" value="">
+                                    <!-- Submit button -->
+                                    <div class="flex-box" style="justify-content: space-around;">
+                                        <div class="flex-btn">
+                                            <button id="close" type="button" class="close-btn">Close</button>
+                                        </div>
+                                        <div class="flex-btn">
+
+                                            <button id="go" class="submit-btn" type="submit" >Submit</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                      </div>
+                </div>
+              </div>
+            </div>
+
+        </div>
+
+{#        onload introduction#}
+        <div id="intro" class="intro-modal">
+            <div class="error-modal-content" style="padding-bottom: 20px;">
+                <header>
+                    <div class="intro-modal-header">
+                        <span onclick="document.getElementById('intro').style.display='none'" class="error-modal-close">&times;</span>
+                        <h3 style="margin-bottom: 0px; font-size: 20px; margin-top:0px; clear: none">How to use</h3>
+                    </div>
+                </header>
+
+                <p class="error-message">Zoom in and click on an area with properties.</p>
+                <p class="error-message">Please click inside the red boundary.</p>
+                <button id="intro-close" class="submit-btn" type="buttom" onclick="intro_close()">Got it!</button>
+            </div>
+        </div>
+
+{#        hidden modal for empty selection#}
+        <div id="empty" class="error-modal">
+            <div class="error-modal-content">
+                <header>
+                    <div class="error-modal-header">
+                        <span onclick="document.getElementById('empty').style.display='none'" class="error-modal-close">&times;</span>
+                        <h3 style="margin-bottom: 0px; font-size: 20px">Empty Selection Error</h3>
+                    </div>
+                </header>
+
+                <p class="error-message">There is no property inside the selected area, please try to zoom in to include marks in the circle.</p>
+            </div>
+        </div>
+
+{#        hidden modal for out of bound#}
+        <div id="outBound" class="error-modal">
+            <div class="error-modal-content">
+                <header>
+                    <div class="error-modal-header">
+                        <span onclick="document.getElementById('outBound').style.display='none'" class="error-modal-close">&times;</span>
+                        <h3 style="margin-bottom: 0px; font-size: 20px" >Out of Boundary Error</h3>
+                    </div>
+                </header>
+
+                <p class="error-message">Please select within the red boundary.</p>
+            </div>
+        </div>
+        <div id="legend"><h3>Sale Price</h3></div>
+	</div>
+
+
+
+{% endblock %}
+
+{% block afterscript %}
+    <script>
+    function intro_close() {
+        var intro_close = document.getElementById('intro');
+        intro_close.style.display = "none";
+
+    }
+    function error() {
+        document.getElementById('empty').style.display = 'block';
+        // Get the modal
+        var error_modal = document.getElementById('empty');
+
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function (event) {
+            if (event.target == error_modal) {
+                error_modal.style.display = "none";
+            }
+        }
+    }
+
+    function bound_error() {
+        document.getElementById('outBound').style.display = 'block';
+        // Get the modal
+        var error_modal = document.getElementById('outBound');
+
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function (event) {
+            if (event.target == error_modal) {
+                error_modal.style.display = "none";
+            }
+        }
+    }
+    </script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/dataPoints.js') }}"></script>
+    <script>
+        var map;
+        var allMarkers = [];
+        //var Points = [];
+        var icon_list = {
+        na: ["Price Unknown", "/static/img/icons/apartment-mid.png"],
+        lowest: ["$100 ~ $240,000", "/static/img/icons/apartment-lowest.png"],
+        low: ["$240,001 ~ $365,000", "/static/img/icons/apartment-low.png"],
+        high: ["$365,001 ~ $550,500","/static/img/icons/apartment-high.png"],
+        highest: ["$550,501 ~ $28,800,000", "/static/img/icons/apartment-highest.png"]
+      };
+
+        function initMap() {
+            // Initialize map
+            var defaultLatLng = new google.maps.LatLng(34.0522, -118.2437);
+            var mapOptions = {
+                center: defaultLatLng,
+                zoom: 11,
+                mapTypeId: google.maps.MapTypeId.ROADMAP,
+                scaleControl: true
+            };
+            map = new google.maps.Map(document.getElementById('map'), mapOptions);
+
+            setBound(map);
+{#            markersOverlay = new google.maps.Data();#}
+            setMarkers();
+            var markerCluster = new MarkerClusterer(map, allMarkers, {zoomOnClick: false, imagePath: '{{ url_for('static', filename='img/m') }}', minimumClusterSize:8});
+
+            {#        setHeatmap();  // Default showing heatmap#}
+        };
+
+        var Circle = null;
+        function setBound(map){
+            var boundary = [{lat: 40.622155, lng: -122.35927800000002}, {lat: 39.446267, lng: -123.38535000000002},
+                {lat: 39.1254909, lng: -123.21096799999998}, {lat: 37.651037, lng: -122.47562299999998},
+                {lat: 37.1066751, lng: -122.1058246}, {lat: 34.639365, lng: -120.46611999999999},
+                {lat: 34.425144, lng: -119.78934900000002}, {lat: 34.4124136, lng: -119.70435350000002},
+                {lat: 34.1486719, lng: -119.21503230000002}, {lat: 34.0485388, lng: -118.95293620000001},
+                {lat: 34.015492, lng: -118.80445700000001}, {lat: 34.034872, lng: -118.52712600000001},
+                {lat: 33.82479600000001, lng: -118.389519}, {lat: 33.778859, lng: -118.417193},
+                {lat: 33.7745496, lng: -118.41652670000002},
+                {lat: 33.7629153, lng: -118.41503269999998},{lat: 33.753859, lng: -118.41205200000002},
+                {lat: 33.74538, lng: -118.394924}, {lat: 33.7430582, lng: -118.38856859999999},
+                {lat: 33.720773, lng: -118.32889699999998}, {lat: 33.7120301, lng:  -118.30193750000001},
+                {lat: 33.7125279, lng: -118.30014019999999}, {lat: 33.7154249, lng: -118.29251970000001},
+                {lat: 33.7664948, lng: -118.19691660000001},
+                {lat: 33.6084112, lng: -117.92858439999998}, {lat: 33.4671554, lng: -117.71235660000002},
+                {lat: 33.3911609, lng: -117.59554800000001}, {lat: 33.1899373, lng: -117.37886930000002},
+                {lat: 33.0192073, lng: -117.27560590000002}, {lat: 32.866663, lng: -117.23808200000002},
+                {lat: 32.761331, lng: -117.25064029999999}, {lat: 32.5753018, lng: -117.1161629},
+                {lat: 32.572929, lng: -117.05508800000001},
+                {lat: 32.573564, lng: -117.01920899999999}, {lat: 32.6308364, lng: -116.96231740000002},
+                {lat: 32.8446389, lng: -116.77423349999998}, {lat: 32.681551, lng: -115.49469799999997},
+                {lat: 33.60319, lng: -114.726699}, {lat: 34.2273629, lng: -116.13374199999998},
+                {lat: 34.9161434, lng: -116.61106569999998}, {lat: 35.61255999999999, lng: -117.68456100000003},
+                {lat: 36.717446, lng: -119.16183799999999}, {lat: 37.640845, lng: -118.97401400000001},
+                {lat: 38.5036984, lng: -120.5020495}, {lat: 39.3597498, lng: -120.09750789999998},
+                {lat: 40.2740435, lng: -120.5025099}, {lat: 40.42534, lng: -120.653478}, {lat: 40.622155, lng: -122.35927800000002}
+            ];
+            var validBoundary = new google.maps.Polygon({
+                clickable:false,
+                paths: boundary,
+                strokeColor: '#FF0000',
+                strokeOpacity: 0.8,
+                strokeWeight: 2,
+                fillColor: '#FF0000',
+                fillOpacity: 0
+            });
+
+            validBoundary.setMap(map);
+
+            google.maps.event.addListener(map, 'click', function(e) {
+                //whether click inside boundary.
+                //if inside display place a red circle with radius of 5000.
+
+                if(google.maps.geometry.poly.containsLocation(e.latLng, validBoundary)){
+				    $('#clickPointLat').val(e.latLng.lat().toString());
+				    $('#clickPointLng').val(e.latLng.lng().toString());
+                    if (Circle != null) {
+                        Circle.setMap(null);
+                        Circle = null;
+                    }
+                    Circle = new google.maps.Circle({
+                        center: e.latLng,
+                        strokeColor: '#FF0000',
+                        strokeOpacity: 0.8,
+                        strokeWeight: 2,
+                        fillColor: '#FF0000',
+                        fillOpacity: 0.35,
+                        map: map,
+                        radius: 5000,
+                        clickable: false
+                    });
+
+                    if(findHouse(Circle)){
+
+						modal();
+					}
+                    else
+                        error();
+                }
+                else{
+                    bound_error();
+                }
+            });
+        }
+
+{#        function moveToLocation(lat, lng){#}
+{#            var center = new google.maps.LatLng(lat, lng);map.setZoom(13);#}
+{#            // using global variable:#}
+{#            map.panTo(center);#}
+{#            map.setZoom(13);#}
+{#        }#}
+
+        //function findHouse(Circle, cirLat, cirLng){
+        function findHouse(Circle){
+            var Points = [];
+            for (var i = 0; i < dataset.features.length; i++) {
+                var coords = dataset.features[i].geometry.coordinates;
+
+                try {
+                    var PlatLng = new google.maps.LatLng(coords[1], coords[0]);
+                    var cirCenter = Circle.getCenter();
+                    if(Circle.getBounds().contains(PlatLng) && google.maps.geometry.spherical.computeDistanceBetween(cirCenter, PlatLng) <= 10000){
+                        {#              console.log(latLng.lat() + " " + latLng.lng());#}
+                        {#                point = (latLng.lat() + " " + latLng.lng())#}
+                        {#                Points.push("(" + PlatLng.lat().toString().substring(0,8) + "," + PlatLng.lng().toString().substring(0,10) + ")");#}
+                        Points.push(dataset.features[i].properties.DataId);
+{#                        console.log(dataset.features[i].properties.DataId)#}
+                    }
+
+                } catch(err) {
+                    console.log("Error: " + err + ".");
+                    return false;
+                }
+
+            }
+
+            if (Points.length > 0) {
+                $('#Points').val(Points.toString());
+                return true;
+            }else{
+                return false;
+            }
+
+            return false;
+        }
+
+        // global infowin
+        var infowindow  = null;
+        var marker = null;
+
+        function addInfoWindow(contentString){
+            // remove the last evaluation result
+            if (infowindow != null) {
+                infowindow.close();
+                marker.setMap(null);
+            }
+
+{#            var contentString = '<div id="contentString">'+#}
+{#                '<div style="line-height:1.00;overflow:hidden;white-space:nowrap;">' +#}
+{#                '<b><p>Predict Price: </b>' + '<span id="price" style="color:#ff0000"></span>' + '<br>' +#}
+{#                '<b><p>List Price: </b>' + '<span id="Lprice"></span>' + '<br>' +#}
+{#                '<b><p>Year Built: </b>' + '<span id="yearBuilt"></span>' + '<br>' +#}
+{#                '<b><p>Structure Square Feet: </b>' + '<span id="sqft"></span>' + '<br>' +#}
+{#                '<b><p>Bedrooms: </b>' + '<span id="Beds"></span>' + '<br>' +#}
+{#                '<b><p>Full Baths: </b>' + '<span id="BathF"></span>' + '<br>' +#}
+{#                '<b><p>Half Baths: </b>' + '<span id="BathH"></span>' + '<br>' +#}
+{#                '<b><p>Garage Spaces: </b>' + '<span id="Garag"></span>' + '<br>' +#}
+{#                '</div>';#}
+
+            infowindow = new google.maps.InfoWindow({
+                content: contentString
+            });
+
+            marker = new google.maps.Marker({
+                position: Circle.getCenter(),
+                map: map,
+                title: 'This Area'
+            });
+
+            infowindow.open(map, marker);
+        }
+
+      function attachFeature(markerj) {
+           markerj.addListener('click', function(e) {
+               var secretFeature = dataset.features[markerj.props];
+               if (markerj.infow != undefined) {
+                   markerj.infow.close();
+               }
+             //console.log(e.latLng.lng() + ', ' + e.latLng.lat());
+             var infoWindow = new google.maps.InfoWindow({content: ""});
+
+             infoWindow.setContent('<div style="line-height:1.00;overflow:hidden;white-space:nowrap;">' +
+                 '<p><b>Coordinates:</b> (' + secretFeature.geometry.coordinates[0] + ', ' + secretFeature.geometry.coordinates[1] + ')</p>' +
+                 '<p><b>Data ID:</b> ' + secretFeature.properties.DataId + '</p>' +
+                 '<p><b>Sale Price:</b> $' + secretFeature.properties.SalePrice + '</p>' +
+                 '<p><b>List Price:</b> $' + secretFeature.properties.ListPrice + '</p>' +
+                 '<p><b>Address:</b><br>' +
+                 secretFeature.properties.Address + '<br>' +
+                 secretFeature.properties.City + ', ' +
+                 secretFeature.properties.State + '&nbsp;' +
+                 secretFeature.properties.PostalCode + '</p></div>'
+                 );
+             infoWindow.open(map, markerj);
+               markerj.infow = infoWindow;
+           });
+       }
+
+        function setMarkers(){
+            //heatmap.setMap(null);
+            map.setOptions({styles: [{featureType: "all",stylers: [{saturation: 0}]}]});
+            map.setMapTypeId('roadmap');
+            for (var i = 0; i < dataset.features.length; ++i) {
+                var coords = dataset.features[i].geometry.coordinates;
+                var latLng = new google.maps.LatLng(coords[1], coords[0]);
+                var markeri = new google.maps.Marker({
+                  position: latLng,
+                  map: map,
+                  icon: getIcon(dataset.features[i].properties.SalePrice),
+                });
+                markeri.props = i;
+                allMarkers.push(markeri);
+                attachFeature(markeri);
+            }
+
+            // Draw legend
+            var legend = document.getElementById('legend');
+             for (var key in icon_list) {
+               var range = icon_list[key][0];
+               var icon = icon_list[key][1];
+               var div = document.createElement('div');
+               div.style['margin'] = '1px';
+               div.innerHTML = '<img src="' + icon + '" style="width:auto;height:25px;vertical-align:middle;">' +
+                               '<span>&nbsp;&nbsp;' + range + '</span>';
+               legend.appendChild(div);
+             }
+            map.controls[google.maps.ControlPosition.LEFT_BOTTOM].push(legend);
+
+        };
+
+        function getIcon(price) {
+{#            var icon_list = getIconList();#}
+            if (isNaN(price) || price <= 0) {return icon_list['na'][1]}
+            else if (price <= 240000) {return icon_list['lowest'][1]}
+            else if (price <= 365000) {return icon_list['low'][1]}
+            else if (price <= 550500) {return icon_list['high'][1]}
+            else {return icon_list['highest'][1]};
+        };
+
+        function modal(){
+            $('#diag').css('display', 'block');
+            $('#modal-container').removeClass().addClass('one');
+            $('body').addClass('modal-active');
+
+
+            var close = document.getElementById('close');
+            var diag = document.getElementById('diag');
+            // When the user clicks anywhere outside of the modal, close it
+            window.onclick = function(event) {
+                if (event.target == close) {
+                    diag.style.display = "none";
+                }
+            }
+        }
+
+        var id_num = 1;
+        var error_response = function(data){
+            $('.api-response').text('Error:' + "");
+        };
+
+        var susccess_response = function(data){
+            //$('.api-response').html("API Response: OK<br/>Content: " + JSON.stringify(data));
+            $('#diag').css('display', 'none');
+            if(data.status != 'failed')
+            {
+                var contentString = '<div id="contentString">'+
+                '<div style="line-height:1.00;overflow:hidden;white-space:nowrap;">' +
+                '<b><p>Predict Price: </b><span id="price" style="color:#ff0000">'+ "$" + data.data +'</span><br>' +
+                '<b><p>List Price: </b> <span id="Lprice">' + "$" + $('#ListPrice').val() + '</span> <br>' +
+                '<b><p>Year Built: </b> <span id="yearBuilt">' + $('#YearBuilt').val() + '</span><br>' +
+                '<b><p>Structure Square Feet: </b> <span id="sqft">' + $('#StructureSqFt').val() + '</span><br>' +
+                '<b><p>Bedrooms: </b> <span id="Beds">' + $('#Bedrooms').val() + '</span><br>' +
+                '<b><p>Full Baths: </b> <span id="BathF">' + $('#BathsFull').val() + '</span><br>' +
+                '<b><p>Half Baths: </b> <span id="BathH">' + $('#BathsHalf').val() + '</span><br>' +
+                '<b><p>Garage Spaces: </b> <span id="Garag">' + $('#GarageSpaces').val() + '</span><br>' +
+				'<b><p>Lat: </b> <span id="Lat">' + $('#clickPointLat').val() + '</span><br>' +
+				'<b><p>Lng: </b> <span id="Lng">' + $('#clickPointLng').val() + '</span><br>' +
+                '</div>';
+
+                addInfoWindow(contentString);
+
+            }
+
+        };
+
+
+        $().ready(function(e){
+
+            //$('form.ajax-post button[type=submit]').click(function(e){
+            $('form.ajax-post').submit(function(e){
+                e.preventDefault();
+                var form = $(this);
+                {#                alert(form.YearBuilt.data)#}
+                $.ajax({
+                    url: form.attr('action'),
+                    method: form.attr('method'),
+                    data: form.serialize(),
+                    dataType: "json"
+                })
+                    .done(function(data){susccess_response(data);})
+                    .fail(function(data){error_response(data);});
+
+                // void the form submit again
+                return false;
+            });
+
+            $('#clear').click(function(){
+                $('#result').html('');
+                id_num = 0;
+            })
+        });
+    </script>
+
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCyji1a4snTdXPg4yF-fxw8G79gUfHKO6E&v=3&libraries=geometry,visualization&callback=initMap" >
+    </script>
+    <script src="{{ url_for('static', filename='js/markerclusterer.js') }}"></script>
+
+{% endblock %}

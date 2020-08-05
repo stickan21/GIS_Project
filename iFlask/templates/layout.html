@@ -1,0 +1,68 @@
+<!doctype html>
+<html>
+  <head>
+    {% include "head.html" %}
+    {% block head %}{% endblock %}
+  </head>
+{#  <body>#}
+    <body class="home page-template page-template-page-templates page-template-front-page page-template-page-templatesfront-page-php page page-id-333 custom-background full-width template-front-page custom-background-white single-author wpb-js-composer js-comp-ver-4.12.1 vc_responsive">
+      <a name="top" style="height:0; position:absolute; top:0;" id="top-anchor"></a>
+      <!-- <div id="pageloader" class="dark-div" style="position:fixed; top:0; left:0; width:100%; height:100%; z-index:99999; background:#179bd7;">
+         <div class="spinner">
+            <div class="cube1"></div>
+            <div class="cube2"></div>
+         </div>
+      </div> -->
+      <div id="body-wrap">
+         <div id="wrap">
+          {# Header #}
+            <header>
+               <div id="top-nav" class="dark-div nav-style-1">
+                  <nav class="navbar navbar-inverse main-color-1-bg" role="navigation">
+                     <div class="container">
+                        <!-- Collect the nav links, forms, and other content for toggling -->
+                        <div class="top-menu">
+
+                           
+                        </div>
+                        <!-- /.navbar-collapse -->
+                     </div>
+                  </nav>
+               </div>
+               <!--/top-nap-->
+               
+               <!-- #main-nav -->      
+               <div id="slider" class="header-bg-rev header-content-0">
+               </div>
+               <!--/slider-->
+               <style type="text/css" scoped="scoped">
+               </style>
+            </header>
+            
+            <div class="top-sidebar">
+               <div class="container">
+                  <div class="row">
+                  </div>
+                  <!--/row-->
+               </div>
+               <!--/container-->
+            </div>
+            <!--/Top sidebar-->    
+            <div id="body" >
+               <div class="row">
+                  <div id="content" class="col-md-12" role="main">
+                     <article class="single-page-content">
+                        
+                        <div class="u_row u_full_row">
+                           <div class="container" style="min-height:300px">
+                              {% block body%}{% endblock %}
+                                 
+                           
+  {# For Javascript #}
+  {% include "afterscript.html"%}
+  {% block bottom %}{% endblock %}
+
+  {% block afterscript %}
+  {% endblock %}
+  </body>
+</html>

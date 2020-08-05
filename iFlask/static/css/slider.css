@@ -1,0 +1,117 @@
+/*------A PEN BY Sean Stopnik------*/
+*, *:before, *:after {
+  box-sizing: border-box;
+}
+
+/*body {
+  font-family: sans-serif;
+  padding: 60px 20px;
+}
+@media (min-width: 600px) {
+  body {
+    padding: 60px;
+  }
+}*/
+
+.range-slider {
+  margin: 0px 0 0 0%;
+}
+
+.range-slider {
+  width: 100%;
+  padding: 0px 28px;
+
+}
+.range-slider__range-limits {
+  width: calc(100% - (73px));
+  position:relative;
+  line-height: 13px;
+  font-size:12px;
+}
+.range-limit-right {
+  right: 0;
+  position: absolute;
+}
+.range-limit-left {
+  left: 0;
+  position: relative;
+}
+.range-slider__range {
+  display: inline-block !important;
+  -webkit-appearance: none;
+  width: calc(100% - (73px)) !important;
+  height: 10px;
+  border-radius: 5px;
+  background: #d7dcdf;
+  outline: none;
+  padding: 0;
+  margin: 0;
+}
+.range-slider__range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #14ade0;
+  cursor: pointer;
+  transition: background .15s ease-in-out;
+}
+.range-slider__range::-webkit-slider-thumb:hover {
+  background: #70c767;
+}
+.range-slider__range:active::-webkit-slider-thumb {
+  background: #70c767;
+}
+.range-slider__range::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  border: 0;
+  border-radius: 50%;
+  background: #14ade0;
+  cursor: pointer;
+  transition: background .15s ease-in-out;
+}
+.range-slider__range::-moz-range-thumb:hover {
+  background: #1abc9c;
+}
+.range-slider__range:active::-moz-range-thumb {
+  background: #1abc9c;
+}
+
+.range-slider__value {
+  display: inline-block;
+  position: relative;
+  width: 60px;
+  color: #fff;
+  line-height: 20px;
+  text-align: center;
+  border-radius: 3px;
+  background: #14ade0;
+  padding: 5px 10px;
+  margin-left: 8px;
+}
+.range-slider__value:after {
+  position: absolute;
+  top: 8px;
+  left: -7px;
+  width: 0;
+  height: 0;
+  border-top: 7px solid transparent;
+  border-right: 7px solid #14ade0;
+  border-bottom: 7px solid transparent;
+  content: '';
+}
+
+::-moz-range-track {
+  background: #d7dcdf;
+  border: 0;
+}
+
+input::-moz-focus-inner,
+input::-moz-focus-outer {
+  border: 0;
+}
+.small-slider {
+  width: 100%;
+}
+
